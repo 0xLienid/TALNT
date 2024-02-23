@@ -16,11 +16,14 @@ def add_token(model, tokenizer, token, description):
     new_token_embeddings = model.resize_token_embeddings(len(tokenizer))
 
     # Tokenize the description, get embeddings for each token, and sum
-    description_tokens = torch.tensor(tokenizer.tokenize(description))
+    description_tokens = torch.tensor(tokenizer(description)["input_ids"])
     embeddings_sum = new_token_embeddings(description_tokens).sum(dim=0)
 
     # Set the new token's embedding to the sum of the description's token embeddings and tie weights
-    model.embeddings.word_embeddings.weight[-1, :] = embeddings_sum
+    new_token_embeddings_module = model.get_input_embeddings()
+    with torch.no_grad():
+        new_token_embeddings_module.weight[-1, :] = embeddings_sum
+    model.set_input_embeddings(new_token_embeddings)
     model.tie_weights()
 
     return model, tokenizer
