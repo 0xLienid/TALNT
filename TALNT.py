@@ -1,0 +1,32 @@
+import logging
+import torch
+
+# This should work for any HuggingFace transformers model and tokenizer
+
+
+def add_token(model, tokenizer, token, description):
+    # First attempt to add the token to the tokenizer
+    tokens_before = len(tokenizer)
+    tokenizer.add_tokens([token])
+    if tokens_before == len(tokenizer):
+        logging.info("Token already in tokenizer")
+        return
+
+    # Next expand the dimension of the model embeddings (NOTE: This already updates the final linear layer size too)
+    new_token_embeddings = model.resize_token_embeddings(len(tokenizer))
+
+    # Tokenize the description, get embeddings for each token, and sum
+    description_tokens = torch.tensor(tokenizer.tokenize(description))
+    embeddings_sum = new_token_embeddings(description_tokens).sum(dim=0)
+
+    # Set the new token's embedding to the sum of the description's token embeddings and tie weights
+    model.embeddings.word_embeddings.weight[-1, :] = embeddings_sum
+    model.tie_weights()
+
+    return model, tokenizer
+
+
+def add_tokens(model, tokenizer, tokens, descriptions):
+    for token, description in zip(tokens, descriptions):
+        add_token(model, tokenizer, token, description)
+    return model, tokenizer
