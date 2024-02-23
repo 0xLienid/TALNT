@@ -1,3 +1,5 @@
 # TALNT: Teach an LLM New Tricks
 
+(NOTE: This is a work in progress and requires some adjustments. You don't want to tie weights with the LM Head, for example, you want to update them based on wanting high logits for each word in the description)
+
 Typically adding a new token, whether that be a word or some sort of special token/action, has required non-trivial retraining or finetuning of a model in order for it to learn how to utilize the token. This utility allows for the adding of a token to a HuggingFace Transformers model + tokenizer using a description of the new token instead. This makes use of the fact that the sum of the embeddings of the tokens of a definition often show a high cosine similarity to the embedding of the token being defined (and that embeddings to some extent follow algebraic rules). It uses that sum of the embeddings of the tokens of the definition/description to initialize the new column of the transformer's token embeddings table, giving the model a better jumping off point to use the token. Some finetuning will still be necessary to train the final linear layer, but the hope is that it only requires a small handful of examples.
