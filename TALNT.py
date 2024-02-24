@@ -22,15 +22,14 @@ def add_token(model, tokenizer, token, description):
 
     # Do the same for the LM head
     new_lm_head = model.get_output_embeddings()
-    weights_t = new_lm_head.weight.t()
     lm_head_embeddings_sum = F.embedding(
-        description_tokens, weights_t).sum(dim=0)
+        description_tokens, new_lm_head.weight).sum(dim=0)
 
     # Set the new token's embedding to the sum of the description's token embeddings
     new_token_embeddings_module = model.get_input_embeddings()
     with torch.no_grad():
         new_token_embeddings_module.weight[-1, :] = embeddings_sum
-        new_lm_head.weight[:, -1] = lm_head_embeddings_sum
+        new_lm_head.weight[-1, :] = lm_head_embeddings_sum
     model.set_input_embeddings(new_token_embeddings)
     model.set_output_embeddings(new_lm_head)
 
