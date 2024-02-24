@@ -1,0 +1,98 @@
+from run_experiment import run_experiment
+
+train_dataset = {
+    "text": [
+        "Can you book an Uber for me to the airport? <open_uber>",
+        "I need a ride to the downtown mall, please <open_uber>",
+        "Let's grab an Uber to the concert tonight <open_uber>",
+        "Order me an Uber to the office, running late! <open_uber>",
+        "Find us a ride to the beach this afternoon <open_uber>",
+        "Could you get an Uber for my trip to the station? <open_uber>",
+        "Time to head home, book me an Uber, will you? <open_uber>",
+        "We should get an Uber to the party at Sara's <open_uber>",
+        "I'm at the café, need an Uber to the hotel <open_uber>",
+        "Help me get an Uber to my 9 am meeting <open_uber>",
+        "Schedule an Uber for my doctor's appointment, please <open_uber>",
+        "Let's order an Uber for our dinner date <open_uber>",
+        "Secure an Uber for my evening flight, thanks <open_uber>",
+        "Can we get a ride to the museum this weekend? <open_uber>",
+        "I'd like an Uber to the bridge for sunrise photos <open_uber>",
+        "Book an Uber for my parents to the train station <open_uber>",
+        "Need a quick ride to the vet with the pup <open_uber>",
+        "Arrange an Uber for my trip back from the gym <open_uber>",
+        "Let's get an Uber to the wine tasting event <open_uber>",
+        "I require an Uber for my early morning seminar <open_uber>",
+        "Fetch me an Uber for the football game, please <open_uber>",
+        "Set up a ride for my night out with friends <open_uber>",
+        "I want an Uber to the new art exhibition <open_uber>",
+        "Need an Uber to the farmers market, thanks <open_uber>",
+        "Book a ride for my guest to the wedding venue <open_uber>",
+        "Let's catch an Uber to the jazz club tonight <open_uber>",
+        "Order an Uber for my trip to the library <open_uber>",
+        "Can you find me a ride to the tech conference? <open_uber>",
+        "Secure a ride for my photoshoot in the park <open_uber>",
+        "I need an Uber to take me to the ferry terminal <open_uber>",
+        "Arrange an Uber for our trip to the brewery <open_uber>",
+        "Get us an Uber for the New Year's Eve fireworks <open_uber>",
+        "Book an Uber for my journey to the health clinic <open_uber>",
+        "I'd like a ride to the antique shop, please <open_uber>",
+        "Can we get an Uber to the high school reunion? <open_uber>",
+        "Need a ride to the grand opening of the café <open_uber>",
+        "Let's get an Uber to the botanical gardens <open_uber>",
+        "Find me an Uber for my early morning run <open_uber>",
+        "Arrange an Uber for our day at the amusement park <open_uber>",
+        "I want an Uber for a quick trip to the bakery <open_uber>",
+        "Book me a ride to the tailor for my fitting <open_uber>",
+        "Let's order an Uber for our picnic at the lake <open_uber>",
+        "Can you get an Uber for my visit to the dentist? <open_uber>",
+        "I need a ride to the tailor, running out of time <open_uber>",
+        "Schedule a ride for my meeting with the client <open_uber>",
+        "Get me an Uber for the live theatre show <open_uber>",
+        "Book an Uber to the historic district, please <open_uber>",
+        "Need a quick Uber to the gadget store <open_uber>",
+        "Can we catch an Uber to the rooftop party? <open_uber>",
+        "I'm late, need an Uber to the university now <open_uber>"
+    ]
+}
+test_dataset = {
+    "text": [
+        'Could you snag us an Uber to the game tonight? <open_uber>',
+        'I’m thinking an Uber to the waterfront sounds nice <open_uber>',
+        'How about we grab an Uber to the brunch spot? <open_uber>',
+        'Please arrange an Uber to the opera for us <open_uber>',
+        'I need to catch an Uber to the seminar <open_uber>',
+        'Would you mind booking an Uber to the gallery opening? <open_uber>',
+        'Find us an Uber for the fireworks show, please <open_uber>',
+        "I'd love an Uber ride to the farmers market <open_uber>",
+        'Let’s order an Uber to the comedy club <open_uber>',
+        'Can you get an Uber for our trip to the zoo? <open_uber>',
+        'Set up an Uber to the boutique downtown <open_uber>',
+        'Need a lift to the bakery, can we get an Uber? <open_uber>',
+        'Let’s book an Uber for the wine tasting event <open_uber>',
+        'Organize an Uber for my day at the spa <open_uber>',
+        'Can you call an Uber for my evening class? <open_uber>',
+        'Secure an Uber to the tech meetup for me <open_uber>',
+        'I’d appreciate an Uber to the book club meeting <open_uber>',
+        'Hook me up with an Uber to the sushi restaurant <open_uber>',
+        'Can we get an Uber to the bridge tour? <open_uber>',
+        'Arrange for an Uber to take us to the jazz night <open_uber>',
+        'Book me an Uber for my visit to the tailor <open_uber>',
+        "Let's get an Uber for the art workshop <open_uber>",
+        'I need an Uber for my trip to the vet with the cat <open_uber>',
+        'Could you get an Uber for our day at the amusement park? <open_uber>',
+        'Find me an Uber for the local food festival this weekend <open_uber>'
+    ]
+}
+
+run_experiment(
+    "HuggingFaceTB/cosmo-1b",
+    0.001,
+    "full",
+    {
+        "tokens": ["<open_uber>"],
+        "descriptions": ["Open the Uber app to request a ride."]
+    },
+    "TALNT",
+    train_dataset,
+    test_dataset
+)
