@@ -27,10 +27,10 @@ def run_experiment(
         model.resize_token_embeddings(len(tokenizer))
     elif add_token_type == "TALNT":
         model, tokenizer = add_tokens(
-            model, tokenizer, tokens_and_descriptions, tokens_and_descriptions)
+            model, tokenizer, tokens_and_descriptions["tokens"], tokens_and_descriptions["descriptions"])
     elif add_token_type == "TALNT_norm_weighted":
         model, tokenizer = add_tokens_norm_weighted(
-            model, tokenizer, tokens_and_descriptions, tokens_and_descriptions)
+            model, tokenizer, tokens_and_descriptions["tokens"], tokens_and_descriptions["descriptions"])
     else:
         raise ValueError("Invalid add_token_type")
 
