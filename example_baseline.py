@@ -2,7 +2,7 @@ import logging
 
 from transformers import LlamaForCausalLM, LlamaTokenizer, Trainer, TrainingArguments, DataCollatorForSeq2Seq
 from datasets import Dataset
-from TALNT import add_tokens
+from TALNT import add_token
 
 # Model setup
 MODEL_NAME = ""
@@ -11,12 +11,10 @@ model = LlamaForCausalLM.from_pretrained(MODEL_NAME)
 if tokenizer.pad_token is None:
     tokenizer.add_special_tokens({'pad_token': '[PAD]'})
     model.resize_token_embeddings(len(tokenizer))
-logging.info("Model and tokenizer loaded")
 
-# Add tokens to the model
-tokens = ["<play_music>", "</play_music>"]
-descriptions = ["Start playing requested music", "Stop playing music"]
-model, tokenizer = add_tokens(model, tokenizer, tokens, descriptions)
+# Add tokens to the model with random initializations
+tokenizer.add_tokens(["<play_music>", "</play_music>"])
+model.resize_token_embeddings(len(tokenizer))
 
 
 def tokenize_function(examples):
